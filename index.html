@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Моделі даних та інформаційні системи</title>
+<style>
+:root{--bg:#eef2f6;--card:#fff;--ink:#1b2438;--mute:#5a667d;--line:#cfd8e3;--acc:#0f766e;--accbg:#d9f0ec;--hl:#fde68a;--ok:#166534;--okbg:#dcfce7;--bad:#991b1b;--badbg:#fee2e2;--onacc:#fff}
+@media (prefers-color-scheme:dark){:root{--bg:#121826;--card:#1b2438;--ink:#e8edf5;--mute:#9aa7bd;--line:#33405a;--acc:#5eead4;--accbg:#12403c;--hl:#5b4a0b;--ok:#86efac;--okbg:#10361f;--bad:#fca5a5;--badbg:#431616;--onacc:#0b1f1d}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header,main,nav{max-width:880px;margin:auto;padding-left:1rem;padding-right:1rem}
+header{padding-top:2rem;padding-bottom:1rem}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.25}
+h1{font-size:2rem;margin:0 0 .3rem}
+header p{margin:0 0 .8rem;color:var(--mute)}
+#who{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+#who input{font:inherit;padding:.4rem .6rem;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink)}
+#who .grow{flex:1;min-width:200px}
+nav{display:flex;gap:.5rem;flex-wrap:wrap}
+nav button{flex:1;min-width:140px;padding:.7rem 1rem;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;border-radius:8px 8px 0 0;cursor:pointer}
+nav button[aria-selected=true]{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
+main{padding-bottom:3rem}
+section{display:none;background:var(--card);border:1px solid var(--line);border-radius:0 0 10px 10px;padding:1.5rem}
+section.on{display:block}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.def{border-left:4px solid var(--acc);background:var(--accbg);padding:.7rem 1rem;border-radius:0 8px 8px 0;margin:1rem 0}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;margin:.6rem 0}
+th,td{border:1px solid var(--line);padding:.4rem .7rem;text-align:left}
+th{background:var(--accbg)}
+tr.h td{background:var(--hl)}
+tr.pick{cursor:pointer}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:640px){.two{grid-template-columns:1fr}}
+details{border:1px solid var(--line);border-radius:8px;padding:.5rem 1rem;margin:.6rem 0}
+summary{cursor:pointer;font-weight:600}
+.btn{padding:.55rem 1rem;border:1px solid var(--acc);background:var(--card);color:var(--ink);border-radius:8px;font:inherit;cursor:pointer}
+.btn.p{background:var(--acc);color:var(--onacc)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.ctl{display:flex;gap:.5rem;flex-wrap:wrap;margin:.6rem 0}
+select{font:inherit;padding:.35rem;border-radius:6px;border:1px solid var(--line);background:var(--card);color:var(--ink);max-width:100%}
+.q{margin:1rem 0;padding-bottom:.8rem;border-bottom:1px dashed var(--line)}
+.opt{display:block;width:100%;text-align:left;margin:.4rem 0;padding:.65rem 1rem;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;font:inherit;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--acc)}
+.opt.sel{background:var(--accbg);border-color:var(--acc)}
+.fb{padding:.6rem 1rem;border-radius:8px;margin:.6rem 0}
+.fb.ok{background:var(--okbg);color:var(--ok)}.fb.bad{background:var(--badbg);color:var(--bad)}.fb.info{background:var(--accbg)}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:1rem}
+.bar i{display:block;height:100%;background:var(--acc)}
+.score{font-size:2.4rem;font-family:Georgia,serif}
+.warn{background:var(--hl);padding:.6rem 1rem;border-radius:8px}
+</style>
+</head>
+<body>
+<header>
+<h1>Моделі даних та інформаційні системи</h1>
+<p>Інформатика · теорія, компетентнісне завдання, тест (кожне виконується один раз)</p>
+<div id="who"></div>
+</header>
+<nav role="tablist" aria-label="Розділи">
+<button role="tab" aria-selected="true" data-t="th">Теорія</button>
+<button role="tab" aria-selected="false" data-t="task">Компетентнісне завдання</button>
+<button role="tab" aria-selected="false" data-t="test">Тест</button>
+</nav>
+<main>
+
+<section id="th" class="on" role="tabpanel">
+<h2>1. Модель подання даних</h2>
+<p>Об’єкти предметної галузі описуються атрибутами та їх значеннями. Одне значення атрибута — <b>елементарна одиниця даних</b>. Вона подається трійкою <i>&lt;об’єкт, атрибут, значення&gt;</i>, наприклад &lt;учень, прізвище, Сорока&gt;; &lt;учень, клас, 11&gt;.</p>
+<div class="def"><b>Модель даних</b> визначає, як дані об’єднуються в структури, які операції можливі над даними й які обмеження діють на їх значення.</div>
+<p>Класичні моделі: <b>ієрархічна</b> (рівні, вузли; зв’язки лише між сусідніми рівнями), <b>мережева</b> (кожен вузол може бути пов’язаний з будь-яким іншим) і <b>реляційна</b>. Є й похідні, наприклад об’єктно-реляційна. Ієрархічні та мережеві БД складні в розробленні, тому поширилась реляційна — набір взаємопов’язаних таблиць.</p>
+<p>У реляційній моделі таблицю називають <b>відношенням</b>, рядок — <b>записом</b>, стовпець — <b>полем</b>. Порядок рядків і стовпців довільний.</p>
+
+<h3>Нормалізація таблиці</h3>
+<details open><summary>Чотири вимоги</summary>
+<ul><li>кожне поле має унікальне ім’я;</li><li>поля однорідні: значення одного поля мають один тип;</li><li>у таблиці немає однакових записів;</li><li>є унікальне поле чи набір полів, що однозначно ідентифікують запис, — <b>ключ</b>.</li></ul></details>
+<details><summary>Ключі</summary>
+<p><b>Простий</b> ключ складається з одного поля, <b>складний</b> — з кількох. У таблиці може бути кілька ключів, але лише один <b>первинний</b>; найкраще обирати простий ключ цілого типу. <b>Лічильник</b> — поле, що нумерує записи й робить кожен унікальним.</p>
+<div class="tw"><table><tr><th>Номер</th><th>Прізвище</th><th>Дата народження</th><th>Адреса</th><th>Клас</th><th>Зріст</th></tr>
+<tr><td>1</td><td>Колот А.І.</td><td>07.02.2002</td><td>Зоряна, 2, кв.7</td><td>10</td><td>172</td></tr>
+<tr><td>2</td><td>Федорчук Ю.А</td><td>30.05.2003</td><td>Лісова, 5</td><td>9</td><td>165</td></tr>
+<tr><td>3</td><td>Таранов С.О.</td><td>02.06.2003</td><td>Поштова, 3, кв.9</td><td>9</td><td>174</td></tr></table></div>
+<p>У таблиці УЧНІ первинний простий ключ — «Номер» (він же лічильник); складним ключем можуть бути «Прізвище» разом із «Датою народження».</p></details>
+
+<h3>Зв’язки між таблицями</h3>
+<p>Для кожного об’єкта створюють власну таблицю, а зв’язки дозволяють отримувати дані з кількох таблиць. Одна таблиця — <b>основна</b> (батьківська) з первинним ключем, друга — <b>допоміжна</b> (дочірня) із <b>зовнішнім ключем</b>. У зовнішньому ключі не може бути значень, яких немає в первинному ключі.</p>
+<p><b>Спробуйте:</b> натисніть на фірму в таблиці ПОСТАЧАЛЬНИКИ — підсвітяться пов’язані записи в ТОВАРИ.</p>
+<div class="two">
+<div class="tw"><table id="sup"><caption>ПОСТАЧАЛЬНИКИ</caption><tr><th>Фірма</th><th>Директор</th><th>Телефон</th></tr>
+<tr class="pick" tabindex="0" data-f="РПЗ-1"><td>РПЗ-1</td><td>Сопко А.І.</td><td>345-26-51</td></tr>
+<tr class="pick" tabindex="0" data-f="БУТ-5"><td>БУТ-5</td><td>Маслов В.М.</td><td>295-44-87</td></tr>
+<tr class="pick" tabindex="0" data-f="ДМК-2"><td>ДМК-2</td><td>Бондаренко К.О.</td><td>454-98-56</td></tr></table></div>
+<div class="tw"><table id="goods"><caption>ТОВАРИ</caption><tr><th>Матеріал</th><th>Вага (т)</th><th>Фірма</th></tr>
+<tr data-f="РПЗ-1"><td>Бетон</td><td>100</td><td>РПЗ-1</td></tr>
+<tr data-f="БУТ-5"><td>Бетон</td><td>120</td><td>БУТ-5</td></tr>
+<tr data-f="ДМК-2"><td>Бетон</td><td>200</td><td>ДМК-2</td></tr>
+<tr data-f="БУТ-5"><td>Цемент</td><td>50</td><td>БУТ-5</td></tr></table></div></div>
+<p>«Фірма» — первинний ключ у ПОСТАЧАЛЬНИКИ, але в ТОВАРИ вона повторюється, тому там це лише зовнішній ключ.</p>
+<div class="def"><b>Цілісність даних.</b> Якщо без встановленого зв’язку видалити з ПОСТАЧАЛЬНИКИ запис фірми БУТ-5, у ТОВАРИ залишаться дані, для яких невідомі директор і телефон. Це порушення цілісності, і СУБД має виявляти його автоматично.</div>
+<details><summary>Типи зв’язків</summary><ul>
+<li><b>один до одного</b> — одному запису відповідає один запис (авто — водій);</li>
+<li><b>один до багатьох</b> — учень має багато оцінок, кожна належить одному учневі (найпоширеніший);</li>
+<li><b>багато до одного</b> — кілька водіїв працюють на одному тролейбусі;</li>
+<li><b>багато до багатьох</b> — учень навчається в кількох учителів, а вчитель працює з кількома учнями.</li></ul></details>
+
+<h2>2. Бази даних в інформаційних системах</h2>
+<div class="def"><b>Інформаційна система (ІС)</b> — програмно-апаратний комплекс для зберігання великих БД, виконання операцій над ними, що залежать від предметної області, та зручного доступу до даних.</div>
+<p>За способом доступу користувачів ІС бувають:</p>
+<ul><li><b>автономні</b> — на одному ПК, часто без мережі (аптека, відділ кадрів); СУБД: Access, dBase, Paradox;</li>
+<li><b>групові</b> — у локальній мережі однієї установи, БД на сервері (InterBase, Sybase, Access, MS SQL Server);</li>
+<li><b>корпоративні</b> — у великих організаціях із віддаленими підрозділами (Oracle, DB2, MS SQL Server);</li>
+<li><b>глобальні</b> — працюють в Інтернеті (TCP/IP), доступ через оглядач.</li></ul>
+<h3>Архітектури в локальних мережах</h3>
+<div class="tw"><table><tr><th></th><th>Файл-сервер</th><th>Клієнт-сервер</th></tr>
+<tr><th>Що пересилається</th><td>файли без опрацювання, часто надлишкові</td><td>лише потрібні записи</td></tr>
+<tr><th>Хто опрацьовує дані</th><td>робочі станції (мають бути потужними)</td><td>сервер (станції можуть бути слабкими)</td></tr>
+<tr><th>Захист</th><td>слабкий, лише на станціях</td><td>права доступу на сервері</td></tr>
+<tr><th>Одночасна зміна</th><td>проблеми</td><td>розділення доступу (черга завдань)</td></tr>
+<tr><th>Недоліки</th><td>навантаження на мережу</td><td>складне налаштування, дороге ПЗ</td></tr></table></div>
+<p>Приклади СУБД-серверів: MS SQL Server, Oracle, MySQL, InterBase, Sybase. БД класифікують за призначенням, моделлю даних і способом доступу.</p>
+<div class="ctl"><button class="btn p" data-go="task">До завдання</button></div>
+</section>
+
+<section id="task" role="tabpanel"></section>
+<section id="test" role="tabpanel"></section>
+</main>
+
+<script>
+// ===== Налаштування: вставте URL веб-застосунку Google Apps Script (див. README) =====
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx73aH4xdPdgeQx3XjRHPklVWN4EhDEvk_RNkl3HaMKwIRQadB0Yvtm-w2ShAdpWQzeJA/exec";
+const MAXQ = 12;
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let S = {};
+try { S = JSON.parse(localStorage.getItem("bd_models") || "{}"); } catch (e) {}
+const save = () => { try { localStorage.setItem("bd_models", JSON.stringify(S)); } catch (e) {} };
+
+// ---- вкладки ----
+function show(id) {
+  if ((id === "task" || id === "test") && !S.name) { $("#who").scrollIntoView(); const i = $("#nm"); if (i) { i.focus(); i.setCustomValidity("x"); } alert("Спочатку вкажіть прізвище, ім’я та клас і натисніть «Підтвердити»."); return; }
+  document.querySelectorAll("nav button").forEach(b => b.setAttribute("aria-selected", b.dataset.t === id));
+  document.querySelectorAll("section").forEach(s => s.classList.toggle("on", s.id === id));
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll("nav button").forEach(b => b.onclick = () => show(b.dataset.t));
+document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => show(b.dataset.go));
+
+// ---- інтерактивний зв’язок ----
+function link(f) { document.querySelectorAll("#goods tr[data-f],#sup tr[data-f]").forEach(r => r.classList.toggle("h", r.dataset.f === f)); }
+document.querySelectorAll("#sup .pick").forEach(r => { r.onclick = () => link(r.dataset.f); r.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); link(r.dataset.f); } }; });
+
+// ---- учень ----
+function renderWho() {
+  if (S.name) { $("#who").innerHTML = `<span>Учень: <b>${esc(S.name)}</b>, клас <b>${esc(S.cls)}</b></span>`; return; }
+  $("#who").innerHTML = `<input id="nm" class="grow" placeholder="Прізвище та ім’я" aria-label="Прізвище та ім’я" autocomplete="name"><input id="cl" size="6" placeholder="Клас" aria-label="Клас"><button class="btn p" id="ok">Підтвердити</button>`;
+  $("#ok").onclick = () => {
+    const n = $("#nm").value.trim().replace(/\s+/g, " "), c = $("#cl").value.trim();
+    if (n.length < 3 || !c) { alert("Введіть прізвище, ім’я та клас."); return; }
+    if (!confirm(`Учень: ${n}, клас ${c}.\nДані не можна буде змінити, а завдання і тест виконуються лише один раз. Продовжити?`)) return;
+    S.name = n; S.cls = c; save(); renderWho(); renderTask(); renderTest();
+  };
+}
+
+// ---- надсилання результатів у Google Таблицю ----
+async function send(part, box) {
+  const r = S[part]; if (r.sent) return;
+  const info = `${S.name}, ${S.cls}, ${part === "task" ? "завдання" : "тест"}: ${r.score}/${r.max}`;
+  if (!SCRIPT_URL) { box.innerHTML = `<div class="fb info">Автоматичне надсилання не налаштовано. Повідомте вчителю результат: <b>${esc(info)}</b></div>`; return; }
+  box.innerHTML = `<div class="fb info">Надсилаємо результат…</div>`;
+  try {
+    const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ name: S.name, cls: S.cls, part: part === "task" ? "Завдання" : "Тест", score: r.score, max: r.max, details: r.ans.join(",") }) });
+    const j = await res.json();
+    if (j.ok || j.error === "duplicate") { r.sent = true; save(); box.innerHTML = `<div class="fb ok">${j.ok ? "Результат збережено." : "Результат уже був записаний раніше."}</div>`; }
+    else throw new Error(j.error);
+  } catch (e) {
+    box.innerHTML = `<div class="fb bad">Не вдалося надіслати результат. Перевірте інтернет і спробуйте ще раз (повторне проходження не потрібне).<div class="ctl"><button class="btn" id="rt">Надіслати ще раз</button></div><small>${esc(info)}</small></div>`;
+    $("#rt").onclick = () => send(part, box);
+  }
+}
+
+// ---- компетентнісне завдання ----
+const T = [
+ ["Який стовпець найкраще обрати первинним ключем таблиці ЧИТАЧІ?", ["Прізвище", "Клас", "Номер_квитка"], 2],
+ ["Яке поле таблиці ВИДАЧІ є зовнішнім ключем, що пов’язує її з ЧИТАЧІ?", ["Номер_видачі", "Назва_книги", "Номер_квитка", "Дата_видачі"], 2],
+ ["Який тип зв’язку між ЧИТАЧІ та ВИДАЧІ?", ["один до одного", "один до багатьох", "багато до одного (читачі до видач)", "багато до багатьох"], 1],
+ ["У якому класі навчається читач, який узяв «Енеїду»?", ["7-Б", "8-А", "9-А", "Визначити неможливо"], 1],
+ ["Запис видачі з якою цифрою в «Номер_видачі» порушує цілісність даних?", ["1", "2", "3", "4"], 3],
+ ["У школі 25 слабких комп’ютерів, спільна БД, захист і права доступу мають бути на сервері. Яку архітектуру обрати?", ["Файл-сервер", "Клієнт-сервер", "Автономну ІС на одному ПК"], 1]
+];
+function renderTask() {
+  const el = $("#task"), r = S.task;
+  let h = `<h2>Компетентнісне завдання: «Шкільна бібліотека»</h2>
+<p>Школа створює БД обліку видачі книг із двома таблицями. Проаналізуйте їх і дайте відповіді на питання.</p>
+<div class="two"><div class="tw"><table><caption>ЧИТАЧІ</caption><tr><th>Номер_квитка</th><th>Прізвище</th><th>Клас</th></tr><tr><td>101</td><td>Мельник</td><td>7-Б</td></tr><tr><td>102</td><td>Шевчук</td><td>8-А</td></tr><tr><td>103</td><td>Бондар</td><td>9-А</td></tr></table></div>
+<div class="tw"><table><caption>ВИДАЧІ</caption><tr><th>Номер_видачі</th><th>Номер_квитка</th><th>Назва_книги</th><th>Дата_видачі</th></tr><tr><td>1</td><td>101</td><td>Гоббіт</td><td>05.10.2026</td></tr><tr><td>2</td><td>102</td><td>Енеїда</td><td>06.10.2026</td></tr><tr><td>3</td><td>101</td><td>Кобзар</td><td>12.10.2026</td></tr><tr><td>4</td><td>104</td><td>Мауглі</td><td>13.10.2026</td></tr></table></div></div>`;
+  if (r && r.done) { el.innerHTML = h + `<div class="fb info">Завдання виконано. Повторне виконання неможливе.</div><div class="score">${r.score} / ${r.max}</div><div id="tsend"></div>`; send("task", $("#tsend")); return; }
+  h += `<div class="warn">Є лише одна спроба: після натискання «Завершити» змінити відповіді не можна.</div>`;
+  T.forEach((q, i) => h += `<div class="q"><b>${i + 1}.</b> ${esc(q[0])}<br><select id="t${i}" aria-label="Відповідь ${i + 1}"><option value="">— оберіть —</option>${q[1].map((o, j) => `<option value="${j}">${esc(o)}</option>`).join("")}</select></div>`);
+  el.innerHTML = h + `<div class="ctl"><button class="btn p" id="tfin">Завершити завдання</button></div><div id="tsend"></div>`;
+  $("#tfin").onclick = () => {
+    const ans = T.map((q, i) => $("#t" + i).value);
+    if (ans.includes("") && !confirm("Не на всі питання дано відповідь. Завершити все одно?")) return;
+    if (!confirm("Завершити завдання? Повторно виконати його не вийде.")) return;
+    const score = ans.filter((a, i) => a !== "" && +a === T[i][2]).length;
+    S.task = { done: true, score, max: T.length, ans: ans.map(a => a === "" ? "-" : a) }; save(); renderTask();
+  };
+}
+
+// ---- тест ----
+const Q = [
+ ["Що визначає модель даних?", ["Лише колір і шрифт таблиць", "Як дані об’єднуються в структури, які операції можливі над ними та які обмеження на значення", "Тільки швидкість роботи комп’ютера", "Розмір файлу бази даних"], 1],
+ ["Які моделі даних належать до класичних?", ["Ієрархічна, мережева, реляційна", "Файлова, графічна, текстова", "Локальна, глобальна, корпоративна", "Проста, складна, змішана"], 0],
+ ["Як подається елементарна одиниця даних?", ["Парою <ключ, запис>", "Трійкою <об’єкт, атрибут, значення>", "Одним числом", "Реченням довільної форми"], 1],
+ ["Як у теорії БД називають таблицю реляційної моделі?", ["Вузлом", "Ключем", "Відношенням", "Рівнем"], 2],
+ ["Яка з вимог нормалізації правильна?", ["Усі поля мають бути текстовими", "У таблиці мають бути однакові записи", "У таблиці немає однакових записів і є ключ", "Імена полів мають повторюватися"], 2],
+ ["Що таке складний ключ?", ["Ключ із кількох полів", "Ключ довжиною понад 10 символів", "Ключ, що зберігається на сервері", "Ключ текстового типу"], 0],
+ ["Яким має бути зовнішній ключ допоміжної таблиці?", ["Унікальним у цій таблиці", "Порожнім", "Його значення мають бути серед значень первинного ключа основної таблиці", "Обов’язково числовим"], 2],
+ ["Який тип зв’язку найпоширеніший у реляційних БД?", ["один до одного", "багато до багатьох", "один до багатьох", "жоден"], 2],
+ ["Яка ІС працює в Інтернеті, а доступ до БД здійснюється через оглядач?", ["Автономна", "Групова", "Глобальна", "Локальна"], 2],
+ ["Який недолік файл-серверної архітектури?", ["Неможливо працювати кільком людям", "Пересилання мережею великих обсягів даних і потужні робочі станції", "Дуже дорогий сервер", "Дані не можна зберігати"], 1],
+ ["Яка перевага клієнт-серверної архітектури?", ["Мережею йдуть лише потрібні записи, станції можуть бути малопотужними", "Не потрібен сервер", "Дешеве програмне забезпечення", "Дані копіюються на кожну станцію"], 0],
+ ["Яку ІС створюють на одному комп’ютері, часто без мережі?", ["Корпоративну", "Автономну", "Глобальну", "Групову"], 1]
+];
+const tbox = () => $("#test");
+function renderTest() {
+  const el = tbox(), r = S.test;
+  if (!S.name) { el.innerHTML = ""; return; }
+  if (r && r.done) {
+    const miss = r.ans.map((a, i) => +a === Q[i][2] ? "" : `<div class="q"><b>${i + 1}. ${esc(Q[i][0])}</b><br>Ваша відповідь: ${a === "-" ? "—" : esc(Q[i][1][+a])}<br>Правильно: ${esc(Q[i][1][Q[i][2]])}</div>`).join("");
+    el.innerHTML = `<h2>Тест завершено</h2><div class="score">${r.score} / ${r.max}</div><div id="xsend"></div><h3>Розбір помилок</h3>${miss || "<p>Помилок немає.</p>"}<p>Повторне проходження неможливе.</p>`;
+    send("test", $("#xsend")); return;
+  }
+  if (!r || !r.started) {
+    el.innerHTML = `<h2>Тест</h2><p>${Q.length} питань, одна правильна відповідь у кожному. Повертатися до попередніх питань не можна.</p><div class="warn">Є лише одна спроба. Якщо закрити сторінку, вона залишиться використаною, і проходження продовжиться з того місця, де ви зупинилися.</div><div class="ctl"><button class="btn p" id="go">Розпочати тест</button></div>`;
+    $("#go").onclick = () => { S.test = { started: true, ans: [], max: Q.length }; save(); renderTest(); }; return;
+  }
+  const i = r.ans.length, q = Q[i]; let pick = null;
+  el.innerHTML = `<div class="bar"><i style="width:${i / Q.length * 100}%"></i></div><p>Питання ${i + 1} з ${Q.length}</p><h3>${esc(q[0])}</h3>${q[1].map((t, j) => `<button class="opt" data-i="${j}">${esc(t)}</button>`).join("")}<div class="ctl"><button class="btn p" id="nx" disabled>${i === Q.length - 1 ? "Завершити" : "Далі"}</button></div>`;
+  el.querySelectorAll(".opt").forEach(b => b.onclick = () => { pick = +b.dataset.i; el.querySelectorAll(".opt").forEach(o => o.classList.toggle("sel", o === b)); $("#nx").disabled = false; });
+  $("#nx").onclick = () => {
+    r.ans.push(String(pick));
+    if (r.ans.length === Q.length) { r.done = true; r.score = r.ans.filter((a, k) => +a === Q[k][2]).length; }
+    save(); renderTest();
+  };
+}
+
+renderWho(); renderTask(); renderTest();
+</script>
+</body>
+</html>
